@@ -2,6 +2,12 @@
 #   This is simplified to work towards SSAP plotting
 #   Thanks Josh Hemann for the example
 
+# Last edit: 2014-09-02
+
+### History
+#   Now put .png in different sub directories
+
+import os
 import numpy as np
 import matplotlib.pyplot as plt
 import S57names
@@ -48,7 +54,7 @@ def pltit(dic_ssap_plot_obj):
                 lst_lbls.append(str(group) + "\n[" + str(num_n) + "]")
                 fil_out.write("   S57names can't find : " + str(dic_ssap_plot_obj["meta"]["fcname"])+", "+str(group) + "\n")
             else:
-                lst_lbls.append(str_S57 + "\n[n=" + str(num_n) + "]")
+                lst_lbls.append(str_S57 + "\n[" + str(num_n) + "]")
                 
         # ** Append the AllInOne data
         lol_data.append(dic_ssap_plot_obj["allio"][parameter])
@@ -101,6 +107,15 @@ def pltit(dic_ssap_plot_obj):
         
         
         # Save the plot to file
-        plt.savefig(u"C:\Martin\Work\ssap\ssapbox_"+str(dic_ssap_plot_obj["meta"]['fcname'])+"_"+str(parameter)+".png")
+        #   save plot by measure type
+        str_dir_by_measuretype = u"C:\Martin\Work\ssap\\"+"mt_"+str(parameter)
+        if not os.path.exists(str_dir_by_measuretype):
+            os.makedirs(str_dir_by_measuretype)
+        plt.savefig(str_dir_by_measuretype +"\\"+ str(parameter)+"_"+str(dic_ssap_plot_obj["meta"]['fcname'])+".png")
+        #   save plot by featuretype
+        str_dir_by_featuretype = u"C:\Martin\Work\ssap\\"+"fc_"+str(dic_ssap_plot_obj["meta"]['fcname'])
+        if not os.path.exists(str_dir_by_featuretype):
+            os.makedirs(str_dir_by_featuretype)
+        plt.savefig(str_dir_by_featuretype +"\\"+ str(parameter)+"_"+str(dic_ssap_plot_obj["meta"]['fcname'])+".png")
         
     return 0
